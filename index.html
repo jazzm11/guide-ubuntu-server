@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide: Ubuntu Server & NGINX</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo" aria-hidden="true">IT</div>
+            <div class="brand">
+                <h1>Guide: Oppsett av Ubuntu Webserver (Apache / NGINX)</h1>
+                <p class="lead">Steg-for-steg guide for ny lærling — opprett VM, installer Ubuntu Server, sett opp
+                    webserver
+                    og host denne guiden.</p>
+            </div>
+        </header>
+
+        <nav aria-label="Innholdsfortegnelse">
+            <div class="toc">
+                <a href="#vm">1. Opprette VM</a>
+                <a href="#ubuntu">2. Installere Ubuntu Server</a>
+                <a href="#ssh">3. Bruk SSH</a>
+                <a href="#nginx">4. Instalere NGINX</a>
+                <a href="#host">5. Lag og Hoste nettsiden</a>
+            </div>
+        </nav>
+
+        <main>
+            <article>
+                <h2 id="vm">1. Opprett VM</h2>
+                <div class="step">
+                    <p>• Gå til Proxmox: <strong>pve-backend.ikt-fag.no</strong></p>
+                    <p>• Trykk på <strong>Create VM</strong> øverst til høyre.</p>
+                    <img src="http://10.12.9.180/img/vm/vm-01.png" alt="Create VM" id="bilder">
+                    <p>• Skriv navnet til VM-en og legg til din pool.</p>
+                    <img src="http://10.12.9.180/img/vm/vm-02.png" alt="Create VM" id="bilder">
+                    <p>• Velg <strong>Ubuntu 24.04</strong> som ISO image.</p>
+                    <img src="http://10.12.9.180/img/vm/vm-03.png" alt="Create VM" id="bilder">
+                    <p>• Bytt Machine til <strong>q35</strong> → trykk <strong>Next</strong>.</p>
+                    <img src="http://10.12.9.180/img/vm/vm-04.png" alt="Create VM" id="bilder">
+                    <p>• Ikke endre noe på Disk.</p>
+                    <p>• På CPU → endre kjerner til <strong>4</strong> og Type til <strong>host</strong>.</p>
+                    <img src="http://10.12.9.180/img/vm/vm-05.png" alt="Create VM" id="bilder">
+                    <p>• Sett RAM til <strong>4096 MiB</strong>.</p>
+                    <p>• Hopp over Network.</p>
+                    <p>• Trykk <strong>Finish</strong>.</p>
+                </div>
+
+                <h2 id="ubuntu">2. Installer Ubuntu Server</h2>
+                <div class="step">
+                    <p>• Start VM → velg <strong>Try or Install Ubuntu</strong></p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-01.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p>• Velg språk: <strong>English</strong></p>
+                    <p>• Keyboard layout → <strong>Norwegian</strong></p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-02.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p>• Velg <strong>Ubuntu Server</strong> for Installasjon</p>
+                    <p>• Gå til Network Configuration → IPv4 → Method: <strong>Manual</strong></p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-03.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p><strong>Sett IP:</strong></p>
+                    <pre>Subnet: 10.12.[pool].0/24
+Address: 10.12.[pool].180
+Gateway: 10.12.[pool].1
+DNS: 10.12.[pool].255, 1.1.1.1
+Search domain: ikt-fag.no</pre>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-04.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p>• Hopp over Proxy og Mirror.</p>
+                    <p>• Velg Standard storage.</p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-05.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p>• Lag bruker og hostname.</p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-07.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <p>• Skip Ubuntu Pro.</p>
+                    <p>• Installer SSH.</p>
+                    <p>• Reboot → trykk Enter.</p>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-08.png" alt="Installer Ubuntu-Server" id="bilder">
+                </div>
+
+                <h2 id="ssh">3. Bruk SSH</h2>
+                <div class="step">
+                    <p>Åpne Terminal på PC-en din og skriv:</p>
+                    <pre>ssh brukernavn@10.12.[pool].180</pre>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-09.png" alt="Bruke SSH på Terminal" id="bilder">
+                    <p>Svar <strong>yes</strong> og skriv passordet ditt.</p>
+                </div>
+
+                <h2 id="nginx">4. Installer Webserver (NGINX)</h2>
+                <div class="step">
+                    <p>Oppdater systemet og installer NGINX:</p>
+                    <pre>sudo apt update
+sudo apt install nginx -y</pre>
+                    <p>Start NGINX:</p>
+                    <pre>sudo systemctl start nginx</pre>
+                    <p>Aktiver auto-boot:</p>
+                    <pre>sudo systemctl enable nginx</pre>
+                    <p>Sjekk status:</p>
+                    <pre>sudo systemctl status nginx</pre>
+                    <p>Test i nettleseren:</p>
+                    <pre>http://10.12.[pool].180</pre>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-10.png" alt="Installer Ubuntu-Server" id="bilder">
+                </div>
+
+                <h2 id="host">5. Lag og host nettsiden</h2>
+                <div class="step">
+                    <p>Gå til webroot:</p>
+                    <pre>cd /var/www/</pre>
+                    <p>Gi deg selv eierskap:</p>
+                    <pre>sudo chown -R $USER:$USER /var/www</pre>
+                    <p>Klon git-repo:</p>
+                    <pre>git clone https://gitlab.ikt-fag.no/mcp/guide-ubuntu-server.git</pre>
+                    <p>Rediger NGINX config:</p>
+                    <pre>sudo nano /etc/nginx/sites-available/default</pre>
+                    <p>Endre:</p>
+                    <pre>root /var/www/html;</pre>
+                    <p>Til:</p>
+                    <pre>root /var/www/guide-ubuntu-server;</pre>
+                    <p>Restart NGINX:</p>
+                    <pre>sudo systemctl restart nginx</pre>
+                    <p>Test nettsiden:</p>
+                    <pre>http://10.12.[pool].180</pre>
+                </div>
+            </article>
+            <aside>
+                <div class="card" role="region" aria-labelledby="help-title">
+                    <h3 id="help-title">Klone Repo fra Gitlab/GitHub</h3>
+                    <pre><code>git clone [lenke til repo eks: https://gitlab.ikt-fag.no/mcp/guide-ubuntu-server.git]</code></pre>
+                </div>
+
+                <div class="card">
+                    <h3>Bildeforslag</h3>
+                    <ol>
+                        <li>Opprette VM i Proxmox</li>
+                        <li>Nettverksoppsett i Ubuntu Installer</li>
+                        <li>Nginx welcome page</li>
+                        <li>Mappe- og filrettigheter</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <h3>Tilgjengelighet</h3>
+                    <ul>
+                        <li>Alle bilder har <code>alt</code>-tekst</li>
+                        <li>Høy kontrast i tekstblokker</li>
+                        <li>Skjemastruktur og tydelige overskrifter</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+    <footer>
+        <p>© 2025 IT-Lærling AS – Utviklet av Jazz</p>
+    </footer>
+</body>
+
+</html>
