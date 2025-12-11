@@ -14,9 +14,15 @@
             <div class="logo" aria-hidden="true">IT</div>
             <div class="brand">
                 <h1>Guide: Oppsett av Ubuntu Webserver (Apache / NGINX)</h1>
-                <p class="lead">Steg-for-steg guide for ny lærling — opprett VM, installer Ubuntu Server, sett opp
-                    webserver
-                    og host denne guiden.</p>
+                <p class="lead">Denne guiden er laget for å gi en ny lærling en praktisk og forståelig steg-for-steg
+                    gjennomgang av hvordan man setter opp en Ubuntu-basert webserver. Guiden dekker alt fra å opprette
+                    en virtuell maskin (VM), installere Ubuntu Server, til å konfigurere enten Apache eller NGINX som
+                    webserver. Til slutt viser guiden hvordan man kan hoste innhold på serveren, inkludert denne guiden
+                    selv.
+
+                    Hensikten er å gi lærlingen praktisk erfaring med serveradministrasjon, forståelse for
+                    webserver-konfigurasjon, og trygghet i å publisere innhold på en egen server. Dette gir et solid
+                    grunnlag for videre arbeid med nettsider, systemadministrasjon og IT-drift.</p>
             </div>
         </header>
 
@@ -34,73 +40,167 @@
             <article>
                 <h2 id="vm">1. Opprett VM</h2>
                 <div class="step">
-                    <p>• Gå til Proxmox: <strong>pve-backend.ikt-fag.no</strong></p>
+                    <div class="tooltip">• Gå til Proxmox: <strong>pve-backend.ikt-fag.no</strong>
+                        <span class="tooltip-text">Proxmox er et program som lar deg kjøre flere virtuelle maskiner på
+                            én server.
+                            Du kan bruke det til å lage og styre VM-er, containere og servere via et enkelt
+                            web-grensesnitt.</span>
+                    </div>
+
                     <p>• Trykk på <strong>Create VM</strong> øverst til høyre.</p>
-                    <img src="http://10.12.9.180/img/vm/vm-01.png" alt="Create VM" id="bilder">
-                    <p>• Skriv navnet til VM-en og legg til din pool.</p>
-                    <img src="http://10.12.9.180/img/vm/vm-02.png" alt="Create VM" id="bilder">
-                    <p>• Velg <strong>Ubuntu 24.04</strong> som ISO image.</p>
-                    <img src="http://10.12.9.180/img/vm/vm-03.png" alt="Create VM" id="bilder">
-                    <p>• Bytt Machine til <strong>q35</strong> → trykk <strong>Next</strong>.</p>
-                    <img src="http://10.12.9.180/img/vm/vm-04.png" alt="Create VM" id="bilder">
+                    <img src="http://10.12.9.180/img/vm/vm-01.jpg" alt="Create VM" id="bilder">
+
+                    <div class="tooltip">• Skriv navnet til VM-en og legg til din pool.
+                        <span class="tooltip-text">En pool er en samling ressurser som deles og brukes sammen som for
+                            eksempel Server/Virtualisering og Database/Tilkoblinger</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/vm/vm-02.jpg" alt="Create VM" id="bilder">
+
+                    <div class="tooltip">• Velg <strong>Ubuntu 24.04</strong>
+                        <span class="tooltip-text">Operativsystem: Ubuntu er et gratis og åpent Linux‑basert OS som
+                            brukes på servere, PC­er og virtuelle maskiner.</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/vm/vm-03.jpg" alt="Create VM" id="bilder">
+
+                    <div class="tooltip">• Bytt Machine til <strong>q35</strong> → trykk <strong>Next</strong>.
+                        <span class="tooltip-text">Machine → Q35: Gir støtte for moderne maskinvare, PCI‑Express og
+                            nyere funksjoner, som gjør at VM‑en kan kjøre ny programvare bedre.</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/vm/vm-04.jpg" alt="Create VM" id="bilder">
+
                     <p>• Ikke endre noe på Disk.</p>
-                    <p>• På CPU → endre kjerner til <strong>4</strong> og Type til <strong>host</strong>.</p>
-                    <img src="http://10.12.9.180/img/vm/vm-05.png" alt="Create VM" id="bilder">
-                    <p>• Sett RAM til <strong>4096 MiB</strong>.</p>
+
+                    <div class="tooltip">• På CPU → endre kjerner til <strong>4</strong> og Type til
+                        <strong>host</strong>.
+                        <span class="tooltip-text">Type → Host: VM‑en arver maskinvaren fra vertsmaskinen, noe som gir
+                            bedre ytelse og kompatibilitet.</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/vm/vm-05.jpg" alt="Create VM" id="bilder">
+
+                    <div class="tooltip">• Sett RAM til <strong>4096 MiB</strong>.
+                        <span class="tooltip-text">4 MiB RAM brukes for å gi VM-en nok minne til å starte og kjøre lett,
+                            samtidig som man sparar ressurser på vertsmaskinen.</span>
+                    </div>
+
                     <p>• Hopp over Network.</p>
+
                     <p>• Trykk <strong>Finish</strong>.</p>
                 </div>
 
                 <h2 id="ubuntu">2. Installer Ubuntu Server</h2>
                 <div class="step">
-                    <p>• Start VM → velg <strong>Try or Install Ubuntu</strong></p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-01.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <div class="tooltip">• Start VM → velg <strong>Try or Install Ubuntu Server</strong>
+                        <span class="tooltip-text">Ubuntu Server er laget for å kjøre tjenester og applikasjoner på en
+                            server, uten grafisk brukergrensesnitt.
+
+                            Bruksområder:
+
+                            Webservere (Apache, NGINX)
+
+                            Database-servere (MySQL, PostgreSQL)
+
+                            Fil- og lagringsservere
+
+                            Virtuelle maskiner og cloud-tjenester</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-01.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
                     <p>• Velg språk: <strong>English</strong></p>
                     <p>• Keyboard layout → <strong>Norwegian</strong></p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-02.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-02.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
                     <p>• Velg <strong>Ubuntu Server</strong> for Installasjon</p>
-                    <p>• Gå til Network Configuration → IPv4 → Method: <strong>Manual</strong></p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-03.png" alt="Installer Ubuntu-Server" id="bilder">
-                    <p><strong>Sett IP:</strong></p>
+
+                    <div class="tooltip">• Gå til Network Configuration → IPv4 → Method: <strong>Manual</strong>
+                        <span class="tooltip-text">IPv4: Det er det mest vanlige og kompatible protokollformatet for
+                            nettverk.
+
+                            Manual: Slik kan du sette en fast IP-adresse, som gjør det enklere å nå serveren og
+                            konfigurere tjenester.</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-03.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
+                    <div class="tooltip"><strong>Sett IP:</strong>
+                        <span class="tooltip-text">Du setter IPv4 til manual for å gi VM-en en fast IP-adresse i stedet
+                            for at den får en tilfeldig fra DHCP.</span>
+                    </div>
                     <pre>Subnet: 10.12.[pool].0/24
 Address: 10.12.[pool].180
 Gateway: 10.12.[pool].1
 DNS: 10.12.[pool].255, 1.1.1.1
 Search domain: ikt-fag.no</pre>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-04.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-04.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
                     <p>• Hopp over Proxy og Mirror.</p>
                     <p>• Velg Standard storage.</p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-05.png" alt="Installer Ubuntu-Server" id="bilder">
-                    <p>• Lag bruker og hostname.</p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-07.png" alt="Installer Ubuntu-Server" id="bilder">
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-05.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
+                    <div class="tooltip">• Lag bruker og hostname.
+                        <span class="tooltip-text">Bruker: Gir deg et personlig og sikkert konto å logge inn med, i
+                            stedet for å bruke root hele tiden.
+
+                            Hostname: Gir VM-en et unik navn på nettverket, så du kan identifisere den enkelt blant
+                            andre maskiner.</span>
+                    </div>
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-07.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
                     <p>• Skip Ubuntu Pro.</p>
-                    <p>• Installer SSH.</p>
-                    <p>• Reboot → trykk Enter.</p>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-08.png" alt="Installer Ubuntu-Server" id="bilder">
+
+                    <div class="tooltip">• Installer SSH.
+                        <span class="tooltip-text">Vi laster ned/installere SSH for å kunne logge inn og styre serveren
+                            eksternt på en sikker måte, uten å måtte bruke fysisk skjerm eller tastatur.</span>
+                    </div><br>
+
+                    <div class="tooltip">• Reboot → trykk Enter.
+                        <span class="tooltip-text">Vent til Rebooten er ferdig og trykk <strong>Enter</strong>.</span>
+                    </div>
+
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-08.png" alt="Installer Ubuntu-Server"
+                        id="bilder">
                 </div>
 
                 <h2 id="ssh">3. Bruk SSH</h2>
                 <div class="step">
                     <p>Åpne Terminal på PC-en din og skriv:</p>
                     <pre>ssh brukernavn@10.12.[pool].180</pre>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-09.png" alt="Bruke SSH på Terminal" id="bilder">
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-09.jpg" alt="Bruke SSH på Terminal"
+                        id="bilder">
                     <p>Svar <strong>yes</strong> og skriv passordet ditt.</p>
                 </div>
 
-                <h2 id="nginx">4. Installer Webserver (NGINX)</h2>
+                <h2 id="nginx">4. Installer Webserver (NGINX-VM)</h2>
                 <div class="step">
-                    <p>Oppdater systemet og installer NGINX:</p>
+
+                    <div class="tooltip">
+                        <span class="tooltip-text"></span>
+                    </div>
+
+                    <div class="tooltip">Oppdater systemet og installer <strong>NGINX</strong>:
+                        <span class="tooltip-text">NGINX er en populær og effektiv webserver som brukes til å levere nettsider og applikasjoner.</span>
+                    </div>
                     <pre>sudo apt update
 sudo apt install nginx -y</pre>
+
                     <p>Start NGINX:</p>
                     <pre>sudo systemctl start nginx</pre>
+
                     <p>Aktiver auto-boot:</p>
                     <pre>sudo systemctl enable nginx</pre>
+
                     <p>Sjekk status:</p>
                     <pre>sudo systemctl status nginx</pre>
+
                     <p>Test i nettleseren:</p>
                     <pre>http://10.12.[pool].180</pre>
-                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-10.png" alt="Installer Ubuntu-Server" id="bilder">
+
+                    <img src="http://10.12.9.180/img/ubuntu-server/ubuntu-10.jpg" alt="Installer Ubuntu-Server"
+                        id="bilder">
+
                 </div>
 
                 <h2 id="host">5. Lag og host nettsiden</h2>

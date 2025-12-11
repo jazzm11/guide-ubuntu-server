@@ -28,23 +28,30 @@ body {
 
 .container {
   max-width: 1300px;
-  margin: 24px auto;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
 }
 
 header {
+  gap: 16px;
+  width: 80%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  flex-direction: row;
+  padding: 20px 0;
 }
 
 .brand {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .logo {
+  flex-shrink: 0;
   width: 64px;
   height: 64px;
   border-radius: 10px;
@@ -154,4 +161,41 @@ nav {
   border-radius: 8px;
   margin-top: 12px;
   margin-bottom: 12px;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block; /* keeps it inline with other text if needed */
+  cursor: pointer;
+}
+.tooltip:hover {
+  text-decoration: underline; /* optional: underline on hover to indicate interactivity */
+  color: var(--accent);
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 20vw; /* allows the text to take up horizontal space instead of wrapping */
+  background-color: #555;
+  color: #fff;
+  text-align: left;
+  padding: 5px;
+  border-radius: 5px;
+
+  /* positioning */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* fade-in effect */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
